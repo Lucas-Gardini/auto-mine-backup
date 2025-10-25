@@ -12,17 +12,31 @@ use zip::write::SimpleFileOptions;
 use crate::enums::WorldStatus;
 
 pub fn log_to_file_and_emit<S: AsRef<str>>(app_handle: &AppHandle, msg: S) {
-    use std::fs::OpenOptions;
-    use std::io::Write;
+    use std::fs::{File, OpenOptions};
+    use std::io::{BufRead, BufReader, Write};
+
+    let log_path = "auto-mine-backup.log";
+    if std::path::Path::new(log_path).exists() {
+        let file = File::open(log_path).unwrap();
+        let reader = BufReader::new(file);
+        let lines: Vec<_> = reader.lines().collect::<Result<_, _>>().unwrap();
+        if lines.len() >= 1000 {
+            let new_lines = &lines[200..];
+            let mut file = File::create(log_path).unwrap();
+            for line in new_lines {
+                writeln!(file, "{}", line).unwrap();
+            }
+        }
+    }
+
     let mut file = OpenOptions::new()
         .create(true)
         .append(true)
-        .open("auto-mine-backup.log")
+        .open(log_path)
         .unwrap();
     writeln!(file, "{}", msg.as_ref()).unwrap();
     println!("{}", msg.as_ref());
 
-    // Emitir para o frontend
     app_handle
         .emit("log_event", &msg.as_ref().to_string())
         .unwrap();
