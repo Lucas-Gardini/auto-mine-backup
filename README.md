@@ -1,5 +1,5 @@
 <div align="center">
-  <img src="src-tauri/icons/128x128.png" width="96" alt="Logo" />
+  <img src="./app-icon.png" width="96" alt="Logo" />
   <h1>Auto Mine Backup</h1>
   <p><b>Backup automático de mundos Minecraft, com interface moderna e integração nativa!</b></p>
   <p>

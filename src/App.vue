@@ -2,7 +2,7 @@
 import { onBeforeUnmount, onMounted, ref } from "vue";
 import { open, message } from "@tauri-apps/plugin-dialog";
 import { LazyStore } from "@tauri-apps/plugin-store";
-import { exit, relaunch } from "@tauri-apps/plugin-process";
+import { relaunch } from "@tauri-apps/plugin-process";
 import { Event, listen, UnlistenFn } from "@tauri-apps/api/event";
 
 const currentView = ref<"settings" | "logs">("settings");
